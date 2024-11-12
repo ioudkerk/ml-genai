@@ -54,3 +54,8 @@ def register_routes(app):
         except Exception as e:
             app.logger.error(f"Error getting stats: {str(e)}")
             return jsonify({"error": "Failed to retrieve statistics"}), 500
+
+    @app.route('/health', methods=['GET'])
+    def health():
+        # TODO: do some checks
+        return "ok"
