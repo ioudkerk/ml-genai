@@ -1,0 +1,15 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - sqlite_data:/app/data
+    environment:
+      - DNA_DB_PATH=/app/data/stats.db
+      - FLASK_ENV=development
+      - FLASK_HOST=0.0.0.0
+    command: python run.py
+
+volumes:
+  sqlite_data:
