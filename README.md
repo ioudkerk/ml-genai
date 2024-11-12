@@ -53,58 +53,22 @@ This command will run all the tests in the `tests` directory.
 
 We use GitOps methodology for deploying and managing our application in Kubernetes. The setup includes ArgoCD, ArgoCD Image Updater, and an ingress controller (Traefik).
 
-### Prerequisites
+I deploy it in a personal k8s cluster running in hetzner, here you have all the config of the cluster:
 
-- Kubernetes cluster
-- ArgoCD installed in the cluster
-- ArgoCD Image Updater installed
-- Traefik Ingress Controller installed
+https://github.com/ioudkerk/workshop-k8s
 
-### Repository Structure
+This is the endpoint to test the API:
+
+URL: https://magneto-hr.aivandrago.me/
 
 ```
-/
-├── deployment/
-│   ├── magneto-hr/
-│   │   ├── Chart.yaml
-│   │   ├── values.yaml
-│   │   ├── values-production.yaml
-│   │   ├── values-staging.yaml
-│   │   └── templates/
-│   └── app-of-apps/
-│       ├── Chart.yaml
-│       ├── values.yaml
-│       └── templates/
+curl --location 'https://magneto-hr.aivandrago.me/stats'
 ```
 
-### ArgoCD Setup
-
-1. Create two ArgoCD applications:
-   - `magneto-hr-production`
-   - `magneto-hr-staging`
-
-2. Create an "App of Apps" to manage both applications:
-   - `magneto-hr-apps`
-
-### ArgoCD Image Updater Configuration
-
-Configure ArgoCD Image Updater to watch for new images in the GitHub Container Registry:
-
-- For production: Use semantic versioning (e.g., v1.2.3)
-- For staging: Use image digest (e.g., sha256:abc123...)
-
-### Deployment Process
-
-1. Changes are pushed to the `/deploymet` directory in the repository.
-2. ArgoCD detects changes and syncs the Kubernetes cluster with the desired state.
-3. ArgoCD Image Updater detects new images and updates the Helm values files.
-4. ArgoCD syncs the updated configuration to the cluster.
-
-### Environments
-
-- Staging: `https://staging.magneto-hr.meli.com`
-- Production: `https://magneto-hr.meli.com`
-
-### Monitoring and Logging
-
-Consider adding monitoring and logging solutions such as Prometheus, Grafana, and LOKI.
+```
+curl --location 'https://magneto-hr.aivandrago.me/mutant' \
+--header 'Content-Type: application/json' \
+--data '{
+    "dna": ["ATCAT", "TCATG", "TTATG", "AGAGG", "CCCTA", "TCACT"]
+}'
+```
